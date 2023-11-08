@@ -7,6 +7,6 @@ public class LineUtils {
     private LineUtils(){}
 
     public void printLine(){
-        System.out.println("====================");
+        System.out.println("============================================================");
     }
 }
