@@ -14,33 +14,33 @@ import lombok.SneakyThrows;
 public class UIDomain {
 
     private LineUtils utils;
-    
+
     private IDatabaseDomain databaseDomain;
 
     private JacksonMapper jacksonMapper;
-    
-    public UIDomain(IDatabaseDomain databaseDomain){
+
+    public UIDomain(IDatabaseDomain databaseDomain) {
         this.utils = LineUtils.INSTANCE;
         this.jacksonMapper = JacksonMapper.INSTANCE;
         this.databaseDomain = databaseDomain;
     }
 
     @SneakyThrows
-    public void showCommandLine(){
-        try(final var input = new Scanner(System.in)){
+    public void showCommandLine() {
+        try (final var input = new Scanner(System.in)) {
             boolean continueLooping = true;
-            do{
+            do {
                 this.utils.printLine();
                 System.out.println("SELAMAT DATANG DI SISTEM INFORMASI CRUD BUKU");
                 this.utils.printLine();
                 System.out.print("""
-                Pilih operasi yang akan dilakukan: 
-                1.Buat Buku
-                2.Dapatkan Data Buku
-                3.Update Buku
-                4.Hapus Buku
-                5.Selesai
-                Pilihan Anda: """);
+                        Pilih operasi yang akan dilakukan:
+                        1.Buat Buku
+                        2.Dapatkan Data Buku
+                        3.Update Buku
+                        4.Hapus Buku
+                        5.Selesai
+                        Pilihan Anda: """);
                 int operationNumber = input.nextInt();
                 input.nextLine();
                 switch (operationNumber) {
@@ -57,20 +57,41 @@ public class UIDomain {
                         var publishDateStr = input.nextLine();
                         var publishDate = LocalDate.parse(publishDateStr, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                         var buku = Buku.builder()
-                        .authorName(authorName)
-                        .bookName(bookName)
-                        .price(bookPrice)
-                        .publishedAt(publishDate)
-                        .build();
+                                .authorName(authorName)
+                                .bookName(bookName)
+                                .price(bookPrice)
+                                .publishedAt(publishDate)
+                                .build();
                         this.databaseDomain.create(buku);
                         this.utils.printLine();
                     }
                     case 2 -> {
 
-                    } 
+                    }
                     case 3 -> {
-
-                    } 
+                        this.utils.printLine();
+                        System.out.print("Masukkan id buku yang akan diubah: ");
+                        var bookId = input.nextInt();
+                        input.nextLine();
+                        System.out.print("Masukkan nama buku: ");
+                        var bookName = input.nextLine();
+                        System.out.print("Masukkan harga buku: ");
+                        var bookPrice = input.nextInt();
+                        input.nextLine();
+                        System.out.print("Masukkan nama penulis: ");
+                        var authorName = input.nextLine();
+                        System.out.print("Masukkan tanggal publish buku: ");
+                        var publishDateStr = input.nextLine();
+                        var publishDate = LocalDate.parse(publishDateStr, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                        var buku = Buku.builder()
+                                .authorName(authorName)
+                                .bookName(bookName)
+                                .price(bookPrice)
+                                .publishedAt(publishDate)
+                                .build();
+                        this.databaseDomain.ubah(bookId, buku);
+                        this.utils.printLine();
+                    }
                     case 4 -> {
 
                     }
@@ -78,8 +99,8 @@ public class UIDomain {
                         continueLooping = false;
                     }
                 }
-            } while(continueLooping);
-             this.utils.printLine();
+            } while (continueLooping);
+            this.utils.printLine();
         }
     }
 }
