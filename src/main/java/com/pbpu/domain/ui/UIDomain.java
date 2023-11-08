@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import com.pbpu.domain.database.IDatabaseDomain;
 import com.pbpu.entity.Buku;
-import com.pbpu.jackson.JacksonMapper;
 import com.pbpu.utils.LineUtils;
 
 import lombok.SneakyThrows;
@@ -16,12 +15,9 @@ public class UIDomain {
     private LineUtils utils;
     
     private IDatabaseDomain databaseDomain;
-
-    private JacksonMapper jacksonMapper;
     
     public UIDomain(IDatabaseDomain databaseDomain){
         this.utils = LineUtils.INSTANCE;
-        this.jacksonMapper = JacksonMapper.INSTANCE;
         this.databaseDomain = databaseDomain;
     }
 
@@ -72,7 +68,12 @@ public class UIDomain {
 
                     } 
                     case 4 -> {
-
+                        this.utils.printLine();
+                        System.out.print("Masukkan id buku yang ingin dihapus: ");
+                        int id = input.nextInt();
+                        input.nextLine();
+                        this.databaseDomain.hapus(id);
+                        this.utils.printLine();
                     }
                     case 5 -> {
                         continueLooping = false;
