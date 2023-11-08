@@ -1,4 +1,4 @@
-package com.pbpu.domain.jackson;
+package com.pbpu.jackson;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.util.DefaultIndenter;

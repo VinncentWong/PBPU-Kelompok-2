@@ -5,8 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import com.pbpu.domain.database.IDatabaseDomain;
-import com.pbpu.domain.jackson.JacksonMapper;
 import com.pbpu.entity.Buku;
+import com.pbpu.jackson.JacksonMapper;
 import com.pbpu.utils.LineUtils;
 
 import lombok.SneakyThrows;

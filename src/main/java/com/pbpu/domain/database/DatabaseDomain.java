@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pbpu.domain.jackson.JacksonMapper;
 import com.pbpu.entity.Buku;
+import com.pbpu.jackson.JacksonMapper;
 
 import lombok.SneakyThrows;
 
