@@ -83,10 +83,43 @@ public class DatabaseDomain implements IDatabaseDomain {
         System.out.printf("Sukses mengubah data buku: %s\n", this.mapper.writeValueAsString(buku));
     }
 
+    @SneakyThrows
     @Override
     public void hapus(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'hapus'");
+        var currentDirectory = new File(System.getProperty("user.dir") + path);
+
+        var dataDirectory = new File(currentDirectory, "data");
+
+        var dataFile = new File(dataDirectory, "data.json");
+
+        if(!dataFile.exists()){
+            System.out.println("Tidak ada file data.json. Silahkan masukkan data terlebih dahulu");
+            return;
+        } 
+
+        var dataList = this.mapper.readValue(dataFile, new TypeReference<List<Buku>>(){});
+
+        if(dataList.isEmpty()){
+            System.out.println("data.json berisi [] kosong");
+            return;
+        }
+
+        boolean dataFound = false;
+        for(int i = 0 ; i < dataList.size() ; i++){
+            if(dataList.get(i).getId().equals(id)){
+                dataList.remove(i);
+                dataFound = true;
+            }
+        }
+
+        this.mapper.writeValue(dataFile, dataList);
+
+        if(!dataFound){
+            System.out.printf("Tidak terdapat Buku dengan id %d dalam data.json\n", id);
+            return;
+        } else{
+            System.out.println("Sukses menghapus buku");
+        }
     }
 
 }
