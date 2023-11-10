@@ -47,10 +47,35 @@ public class DatabaseDomain implements IDatabaseDomain {
         System.out.printf("Sukses menambahkan data buku: %s\n", this.mapper.writeValueAsString(buku));
     }
 
+   @SneakyThrows
     @Override
     public Buku get(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+        Buku buku = null;
+        var dataList = getAll();
+        for (Buku data: dataList){
+            if (data.getId() == id){
+                buku = data;
+            }
+        }
+        return buku;
+    }
+
+    @SneakyThrows
+    @Override
+    public List<Buku> getAll() {
+        var currentDirectory = new File(System.getProperty("user.dir") + path);
+
+        var dataDirectory = new File(currentDirectory, "data");
+
+        var dataFile = new File(dataDirectory, "data.json");
+        if (!dataFile.exists()) {
+            dataFile.createNewFile();
+            this.mapper.writeValue(dataFile, new ArrayList<>());
+        }
+
+        var dataList = this.mapper.readValue(dataFile, new TypeReference<List<Buku>>() {
+        });
+        return dataList;
     }
 
     @SneakyThrows
