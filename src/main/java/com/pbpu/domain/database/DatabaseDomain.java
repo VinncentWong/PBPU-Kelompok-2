@@ -47,13 +47,13 @@ public class DatabaseDomain implements IDatabaseDomain {
         System.out.printf("Sukses menambahkan data buku: %s\n", this.mapper.writeValueAsString(buku));
     }
 
-   @SneakyThrows
+    @SneakyThrows
     @Override
     public Buku get(int id) {
         Buku buku = null;
         var dataList = getAll();
-        for (Buku data: dataList){
-            if (data.getId() == id){
+        for (Buku data : dataList) {
+            if (data.getId() == id) {
                 buku = data;
             }
         }
@@ -91,21 +91,22 @@ public class DatabaseDomain implements IDatabaseDomain {
             this.mapper.writeValue(dataFile, new ArrayList<>());
         }
 
-        var dataList = this.mapper.readValue(dataFile, new TypeReference<List<Buku>>() {
-        });
+        var dataList = this.getAll();
 
         var targetBook = dataList.get(id - 1);
-        buku.setId(id);
+
         if (targetBook == null) {
             System.out.println("Buku tidak ditemukan");
             return;
         }
-
+        buku.setId(id);
         dataList.set(id - 1, buku);
 
         this.mapper.writeValue(dataFile, dataList);
 
-        System.out.printf("Sukses mengubah data buku: %s\n", this.mapper.writeValueAsString(buku));
+        System.out.println("Sukses mengubah data buku");
+
+        System.out.println(buku.toString());
     }
 
     @SneakyThrows
@@ -117,21 +118,22 @@ public class DatabaseDomain implements IDatabaseDomain {
 
         var dataFile = new File(dataDirectory, "data.json");
 
-        if(!dataFile.exists()){
+        if (!dataFile.exists()) {
             System.out.println("Tidak ada file data.json. Silahkan masukkan data terlebih dahulu");
             return;
-        } 
+        }
 
-        var dataList = this.mapper.readValue(dataFile, new TypeReference<List<Buku>>(){});
+        var dataList = this.mapper.readValue(dataFile, new TypeReference<List<Buku>>() {
+        });
 
-        if(dataList.isEmpty()){
+        if (dataList.isEmpty()) {
             System.out.println("data.json berisi [] kosong");
             return;
         }
 
         boolean dataFound = false;
-        for(int i = 0 ; i < dataList.size() ; i++){
-            if(dataList.get(i).getId().equals(id)){
+        for (int i = 0; i < dataList.size(); i++) {
+            if (dataList.get(i).getId().equals(id)) {
                 dataList.remove(i);
                 dataFound = true;
             }
@@ -139,10 +141,10 @@ public class DatabaseDomain implements IDatabaseDomain {
 
         this.mapper.writeValue(dataFile, dataList);
 
-        if(!dataFound){
+        if (!dataFound) {
             System.out.printf("Tidak terdapat Buku dengan id %d dalam data.json\n", id);
             return;
-        } else{
+        } else {
             System.out.println("Sukses menghapus buku");
         }
     }
