@@ -92,15 +92,22 @@ public class DatabaseDomain implements IDatabaseDomain {
         }
 
         var dataList = this.getAll();
-
-        var targetBook = dataList.get(id - 1);
+        int index = -1;
+        Buku targetBook = null;
+        for (int i = 0; i < dataList.size(); i++) {
+            if (dataList.get(i).getId().equals(id)) {
+                targetBook = dataList.get(i);
+                index = i;
+            }
+        }
 
         if (targetBook == null) {
             System.out.println("Buku tidak ditemukan");
             return;
         }
+
         buku.setId(id);
-        dataList.set(id - 1, buku);
+        dataList.set(index, buku);
 
         this.mapper.writeValue(dataFile, dataList);
 
